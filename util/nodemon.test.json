@@ -1,0 +1,10 @@
+{
+  "watch": [
+    "__tests__"
+  ],
+  "ext": "spec.ts",
+  "ignore": [
+    "__tests__/support"
+  ],
+  "exec": "cross-env ENV_FILE=test ts-node -r ./env -r tsconfig-paths/register ./__tests__/start.ts"
+}
