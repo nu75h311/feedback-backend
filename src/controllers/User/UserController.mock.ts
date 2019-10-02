@@ -1,9 +1,9 @@
 import { IUser } from '@entities';
 import { getRandomInt } from '@shared';
 import { MockDaoMock } from '../MockDb/MockDao.mock';
-import { IUserDao } from './UserDao';
+import { IUserController } from './UserController';
 
-export class UserDao extends MockDaoMock implements IUserDao {
+export class UserController extends MockDaoMock implements IUserController {
 
     public async getAll(): Promise<IUser[]> {
         try {

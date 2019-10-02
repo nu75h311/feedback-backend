@@ -4,7 +4,7 @@ import supertest from 'supertest';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { Response, SuperTest, Test } from 'supertest';
 import { IUser, User } from '@entities';
-import { UserDao } from '@daos';
+import { UserController } from '@controllers';
 import { pErr, paramMissingError } from '@shared';
 
 describe('Users Routes', () => {
@@ -33,7 +33,7 @@ describe('Users Routes', () => {
                 new User('Gordan Freeman', 'gordan.freeman@gmail.com'),
             ];
 
-            spyOn(UserDao.prototype, 'getAll').and.returnValue(Promise.resolve(users));
+            spyOn(UserController.prototype, 'getAll').and.returnValue(Promise.resolve(users));
 
             agent.get(getUsersPath)
                 .end((err: Error, res: Response) => {
@@ -53,7 +53,7 @@ describe('Users Routes', () => {
             "${BAD_REQUEST}" if the request was unsuccessful.`, (done) => {
 
             const errMsg = 'Could not fetch users.';
-            spyOn(UserDao.prototype, 'getAll').and.throwError(errMsg);
+            spyOn(UserController.prototype, 'getAll').and.throwError(errMsg);
 
             agent.get(getUsersPath)
                 .end((err: Error, res: Response) => {
@@ -77,7 +77,7 @@ describe('Users Routes', () => {
 
         it(`should return a status code of "${CREATED}" if the request was successful.`, (done) => {
 
-            spyOn(UserDao.prototype, 'add').and.returnValue(Promise.resolve());
+            spyOn(UserController.prototype, 'add').and.returnValue(Promise.resolve());
 
             agent.post(addUsersPath).type('form').send(userData) // pick up here
                 .end((err: Error, res: Response) => {
@@ -104,7 +104,7 @@ describe('Users Routes', () => {
             if the request was unsuccessful.`, (done) => {
 
             const errMsg = 'Could not add user.';
-            spyOn(UserDao.prototype, 'add').and.throwError(errMsg);
+            spyOn(UserController.prototype, 'add').and.throwError(errMsg);
 
             callApi(userData)
                 .end((err: Error, res: Response) => {
@@ -128,7 +128,7 @@ describe('Users Routes', () => {
 
         it(`should return a status code of "${OK}" if the request was successful.`, (done) => {
 
-            spyOn(UserDao.prototype, 'update').and.returnValue(Promise.resolve());
+            spyOn(UserController.prototype, 'update').and.returnValue(Promise.resolve());
 
             callApi(userData)
                 .end((err: Error, res: Response) => {
@@ -155,7 +155,7 @@ describe('Users Routes', () => {
             if the request was unsuccessful.`, (done) => {
 
             const updateErrMsg = 'Could not update user.';
-            spyOn(UserDao.prototype, 'update').and.throwError(updateErrMsg);
+            spyOn(UserController.prototype, 'update').and.throwError(updateErrMsg);
 
             callApi(userData)
                 .end((err: Error, res: Response) => {
@@ -175,7 +175,7 @@ describe('Users Routes', () => {
 
         it(`should return a status code of "${OK}" if the request was successful.`, (done) => {
 
-            spyOn(UserDao.prototype, 'delete').and.returnValue(Promise.resolve());
+            spyOn(UserController.prototype, 'delete').and.returnValue(Promise.resolve());
 
             callApi(5)
                 .end((err: Error, res: Response) => {
@@ -190,7 +190,7 @@ describe('Users Routes', () => {
             if the request was unsuccessful.`, (done) => {
 
             const deleteErrMsg = 'Could not delete user.';
-            spyOn(UserDao.prototype, 'delete').and.throwError(deleteErrMsg);
+            spyOn(UserController.prototype, 'delete').and.throwError(deleteErrMsg);
 
             callApi(1)
                 .end((err: Error, res: Response) => {

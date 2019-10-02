@@ -1,13 +1,13 @@
 import { IUser } from '@entities';
 
-export interface IUserDao {
+export interface IUserController {
     getAll: () => Promise<IUser[]>;
     add: (user: IUser) => Promise<void>;
     update: (user: IUser) => Promise<void>;
     delete: (id: number) => Promise<void>;
 }
 
-export class UserDao implements IUserDao {
+export class UserController implements IUserController {
 
     /**
      *

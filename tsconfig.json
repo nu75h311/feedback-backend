@@ -13,8 +13,8 @@
     "target": "es6",
     "moduleResolution": "node",
     "paths": {
-      "@daos": [
-        "src/daos"
+      "@controllers": [
+        "src/controllers"
       ],
       "@entities": [
         "src/entities"

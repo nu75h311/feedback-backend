@@ -1,5 +1,5 @@
 
-import { UserDao } from '@daos';
+import { UserController } from '@controllers';
 import { logger } from '@shared';
 import { Request, Response, Router, Express } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
@@ -8,7 +8,7 @@ import { ParamsDictionary } from 'express-serve-static-core';
 
 // Init shared
 const router = Router();
-const userDao = new UserDao();
+const userController = new UserController();
 
 /******************************************************************************
  *                      Get All Users - "GET /api/users/all"
@@ -16,8 +16,8 @@ const userDao = new UserDao();
 
 router.get('/all', async (req: Request, res: Response) => {
     try {
-        const users = await userDao.getAll();
-        return res.status(OK).json({users});
+        const users = await userController.getAll();
+        return res.status(OK).json({ users });
     } catch (err) {
         logger.error(err.message, err);
         return res.status(BAD_REQUEST).json({
@@ -38,7 +38,7 @@ router.post('/add', async (req: Request, res: Response) => {
                 error: paramMissingError,
             });
         }
-        await userDao.add(user);
+        await userController.add(user);
         return res.status(CREATED).end();
     } catch (err) {
         logger.error(err.message, err);
@@ -61,7 +61,7 @@ router.put('/update', async (req: Request, res: Response) => {
             });
         }
         user.id = Number(user.id);
-        await userDao.update(user);
+        await userController.update(user);
         return res.status(OK).end();
     } catch (err) {
         logger.error(err.message, err);
@@ -78,7 +78,7 @@ router.put('/update', async (req: Request, res: Response) => {
 router.delete('/delete/:id', async (req: Request, res: Response) => {
     try {
         const { id } = req.params as ParamsDictionary;
-        await userDao.delete(Number(id));
+        await userController.delete(Number(id));
         return res.status(OK).end();
     } catch (err) {
         logger.error(err.message, err);
