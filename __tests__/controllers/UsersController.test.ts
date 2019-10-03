@@ -1,5 +1,8 @@
+import mockingoose from 'mockingoose';
+
 import { UsersController } from '@controllers';
 import { IUser } from '@interfaces';
+import { userModel as User } from '@models';
 
 describe('The UserController', () => {
     const userController = new UsersController();
@@ -8,11 +11,11 @@ describe('The UserController', () => {
             {
                 "name": "First User",
                 "email": "first.user@gmail.com",
-                "id": "defined_Id"
             },
         ];
+        mockingoose(User).toReturn(expectedUsers, 'find');
         test('should return all users', () => {
-            expect(userController.getAllUsers).toEqual(Promise.resolve(expectedUsers));
+            expect(userController.getAllUsers).toEqual(expectedUsers);
         });
     });
 });

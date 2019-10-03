@@ -12,4 +12,13 @@ module.exports = {
   testMatch: [
     '**/__tests__/controllers/**/*.[jt]s?(x)',
   ],
+
+  moduleNameMapper: {
+    '@controllers': '<rootDir>/src/controllers',
+    '@interfaces': '<rootDir>src/interfaces',
+    '@models': '<rootDir>src/models',
+    '@routes': '<rootDir>src/routes',
+    '@shared': '<rootDir>src/shared',
+    '@server': '<rootDir>src/Server',
+  }
 };
