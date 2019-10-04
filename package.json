@@ -14,11 +14,11 @@
   "homepage": "https://github.com/nu75h311/feedback-backend#readme",
   "scripts": {
     "build": "node ./util/build.js",
-    "lint": "tslint --project \"tsconfig.json\"",
+    "lint": "tslint --fix --project \"tsconfig.json\"",
     "serve": "cross-env ENV_FILE=production node -r ./env -r module-alias/register ./dist/start.js",
     "start": "nodemon --config \"./util/nodemon.json\"",
-    "test": "nodemon --config \"./util/nodemon.test.json\"",
-    "test-it": "jest"
+    "test": "cross-env ENV_FILE=test jest --setupFiles ./env",
+    "test-watch": "jest --watch"
   },
   "_moduleAliases": {
     "@controllers": "dist/controllers",

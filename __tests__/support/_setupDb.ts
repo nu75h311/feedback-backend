@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
-import { MongoMemoryServer } from "mongodb-memory-server";
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { logger } from '@shared';
 
 // Sets up and tears down an in-memory MongoDB for test runtime
 export class MemoryDb {
-    mongoServer: MongoMemoryServer = new MongoMemoryServer();
+    public mongoServer: MongoMemoryServer = new MongoMemoryServer();
 
-    initDb = async () => {
+    public initDb = async () => {
         mongoose.Promise = Promise;
 
         const mongoUri = await this.mongoServer.getConnectionString();
@@ -23,7 +23,7 @@ export class MemoryDb {
         });
     }
 
-    teardownDb = async () => {
+    public teardownDb = async () => {
         await mongoose.disconnect();
         await this.mongoServer.stop();
     }

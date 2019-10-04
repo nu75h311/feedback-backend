@@ -10,7 +10,7 @@ const connectDb = () => {
       useUnifiedTopology: true,
     },
     (err) => {
-      if (err) logger.error(err);
+      if (err) { logger.error(err); }
     });
   const { connection } = mongoose;
 

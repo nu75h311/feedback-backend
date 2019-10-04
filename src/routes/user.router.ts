@@ -1,9 +1,6 @@
 
 import { UsersController } from '@controllers';
-import { logger } from '@shared';
-import { Request, Response, Router, Express } from 'express';
-import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
-import { paramMissingError } from '@shared';
+import { Router } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
 
 // Init shared

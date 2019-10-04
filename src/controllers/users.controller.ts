@@ -7,7 +7,7 @@ import { userModel as User } from '@models';
 
 export class UsersController {
 
-    getAllUsers = async (request: Request, response: Response): Promise<Response> => {
+    public getAllUsers = async (request: Request, response: Response): Promise<Response> => {
         try {
             const users: IUser[] = await User.find().exec();
             response.status(OK);
@@ -19,7 +19,7 @@ export class UsersController {
         }
     }
 
-    createAUser = async (request: Request, response: Response): Promise<Response> => {
+    public createAUser = async (request: Request, response: Response): Promise<Response> => {
         const userData: IUser = request.body;
         const createdUser = new User(userData);
         const savedUser: IUser = await createdUser.save();
