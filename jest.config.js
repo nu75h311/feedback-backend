@@ -10,7 +10,7 @@ module.exports = {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    '**/__tests__/controllers/**/*.[jt]s?(x)',
+    '**/__tests__/controllers/**/*.test.[jt]s?(x)',
   ],
 
   moduleNameMapper: {
@@ -20,5 +20,13 @@ module.exports = {
     '@routes': '<rootDir>src/routes',
     '@shared': '<rootDir>src/shared',
     '@server': '<rootDir>src/Server',
-  }
+  },
+
+  reporters: [
+    'default',
+    ['./node_modules/jest-html-reporter', {
+      'pageTitle': 'feedback app backend test report',
+      'theme': 'darkTheme',
+    }]
+  ]
 };

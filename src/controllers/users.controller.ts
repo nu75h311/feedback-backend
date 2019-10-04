@@ -1,4 +1,4 @@
-import * as express from 'express';
+import { Request, Response } from 'express';
 import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 import { logger } from '@shared';
 
@@ -7,19 +7,19 @@ import { userModel as User } from '@models';
 
 export class UsersController {
 
-    getAllUsers = async (request: express.Request, response: express.Response): Promise<express.Response> => {
+    getAllUsers = async (request: Request, response: Response): Promise<Response> => {
         try {
             const users: IUser[] = await User.find().exec();
-            return response.status(OK).json({ users });
+            response.status(OK);
+            return response.send(users);
         } catch (err) {
             logger.error(err.message, err);
-            return response.status(BAD_REQUEST).json({
-                error: err.message,
-            });
+            response.status(BAD_REQUEST);
+            return response.send(`error: ${err.message}`);
         }
     }
 
-    createAUser = async (request: express.Request, response: express.Response): Promise<express.Response> => {
+    createAUser = async (request: Request, response: Response): Promise<Response> => {
         const userData: IUser = request.body;
         const createdUser = new User(userData);
         const savedUser: IUser = await createdUser.save();

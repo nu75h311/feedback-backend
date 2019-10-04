@@ -65,3 +65,6 @@ typings/
 
 # ide
 .vscode
+
+# test report
+test-report.html

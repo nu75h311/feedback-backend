@@ -5,13 +5,9 @@ import logger from 'morgan';
 import path from 'path';
 
 import BaseRouter from './routes';
-import { connectDb } from './databaseHandler';
 
 // Init express
 const app = express();
-
-// Connect to the database
-connectDb();
 
 // Add middleware/settings/routes to express.
 app.use(logger('dev'));
