@@ -27,4 +27,8 @@ export class MemoryDb {
         await mongoose.disconnect();
         await this.mongoServer.stop();
     }
+
+    public cleanDb = async () => {
+        await mongoose.connection.dropDatabase();
+    }
 }

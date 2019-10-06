@@ -1,4 +1,5 @@
 import request from 'supertest';
+import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 
 import app from '@server';
 import { logger } from '@shared';
@@ -28,9 +29,14 @@ afterAll(async () => {
     await memoryDb.teardownDb();
 });
 
-describe('GET /api/users', () => {
-    test('/all', async () => {
+afterEach(async () => {
+    await memoryDb.cleanDb();
+});
 
+describe('/api/users', () => {
+    test('GET', async () => {
+
+        // give user in database
         const basicUser: IUser = {
             name: 'Basic User',
             email: 'basic.user@gmail.com',
@@ -38,9 +44,30 @@ describe('GET /api/users', () => {
         const createdUser = new User(basicUser);
         await createdUser.save();
 
-        const response = await request(app).get('/api/users/all');
-        expect(response.status).toBe(200);
+        // when GET all users
+        const response = await request(app).get('/api/users');
+
+        // then response should be OK and data should be correct
+        expect(response.status).toBe(OK);
+        expect(response.body[0]._id).toBeDefined;
         expect(response.body[0].name).toBe(basicUser.name);
         expect(response.body[0].email).toBe(basicUser.email);
+    });
+
+    test('POST', async () => {
+
+        // when POST a user
+        const response = await request(app)
+            .post('/api/users')
+            .send({
+                name: 'Created User',
+                email: 'created.user@gmail.com',
+            });
+
+        // then response should be OK and created user should be returned
+        expect(response.status).toBe(CREATED);
+        expect(response.body._id).toBeDefined;
+        expect(response.body.name).toBe('Created User');
+        expect(response.body.email).toBe('created.user@gmail.com');
     });
 });

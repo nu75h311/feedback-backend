@@ -7,22 +7,29 @@ import { userModel as User } from '@models';
 
 export class UsersController {
 
-    public getAllUsers = async (request: Request, response: Response): Promise<Response> => {
+    public getAllUsers = async (req: Request, res: Response): Promise<Response> => {
         try {
             const users: IUser[] = await User.find().exec();
-            response.status(OK);
-            return response.send(users);
+            res.status(OK);
+            return res.send(users);
         } catch (err) {
             logger.error(err.message, err);
-            response.status(BAD_REQUEST);
-            return response.send(`error: ${err.message}`);
+            res.status(BAD_REQUEST);
+            return res.send(`error: ${err.message}`);
         }
     }
 
-    public createAUser = async (request: Request, response: Response): Promise<Response> => {
-        const userData: IUser = request.body;
-        const createdUser = new User(userData);
-        const savedUser: IUser = await createdUser.save();
-        return response.send(savedUser);
+    public createUser = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const userData: IUser = req.body;
+            const createdUser = new User(userData);
+            const savedUser: IUser = await createdUser.save();
+            res.status(CREATED);
+            return res.send(savedUser);
+        } catch (err) {
+            logger.error(err.message, err);
+            res.status(BAD_REQUEST);
+            return res.send(`error: ${err.message}`);
+        }
     }
 }

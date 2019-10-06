@@ -11,7 +11,7 @@ const usersController = new UsersController();
  *                      Get All Users - "GET /api/users/all"
  ******************************************************************************/
 
-router.get('/all', usersController.getAllUsers);
+router.get('/', usersController.getAllUsers);
 // async (req: Request, res: Response) => {
 //     try {
 //         const users = await usersController.getAllUsers;
@@ -28,6 +28,7 @@ router.get('/all', usersController.getAllUsers);
  *                       Add One - "POST /api/users/add"
  ******************************************************************************/
 
+router.post('/', usersController.createUser);
 // router.post('/add', async (req: Request, res: Response) => {
 //     try {
 //         const { user } = req.body;
