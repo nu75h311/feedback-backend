@@ -4,11 +4,15 @@
     "member-ordering": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
-    "quotemark": [true, "single"]
+    "quotemark": [
+      true,
+      "single"
+    ]
   },
   "linterOptions": {
     "exclude": [
-      "./node_modules/**"
+      "./node_modules/**",
+      "./__tests__/**"
     ]
   }
 }
