@@ -19,7 +19,7 @@ export class MemoryDb {
         mongoose.connect(mongoUri, mongooseOpts);
 
         mongoose.connection.once('open', () => {
-            logger.info('MongoDB database connection established successfully');
+            logger.debug('MongoDB database connection established successfully');
         });
     }
 
