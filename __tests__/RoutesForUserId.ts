@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { BAD_REQUEST, OK } from 'http-status-codes';
+import { OK, NOT_FOUND } from 'http-status-codes';
 
 import app from '@server';
 import { logger } from '@shared';
@@ -54,24 +54,47 @@ export const routesForUserIdTests = function () {
         expect(response.body.email).toBe(basicUser.email);
     });
 
-    // test('PATCH', async () => {
+    test('GET wrong id', async () => {
 
-    //     // given user in database
-    //     const basicUser: IUser = {
-    //         name: 'Before Change User',
-    //         email: 'before.change.user@gmail.com',
-    //     };
-    //     const createdUser = new User(basicUser);
-    //     await createdUser.save();
+        // given user in database
+        const basicUser: IUser = {
+            name: 'Basic User',
+            email: 'basic.user@gmail.com',
+        };
+        const createdUser = new User(basicUser);
+        const savedUser = await createdUser.save();
+        const userId = savedUser._id;
 
-    //     // when PATCH that user
-    //     const response = await request(app)
-    //         .patch('/api/users');
+        // when GET all users
+        const response = await request(app).get(`/api/users/${userId}somethingElse`);
 
-    //     // then response should be OK and data should be correct
-    //     expect(response.status).toBe(OK);
-    //     expect(response.body[0]._id).toBeDefined;
-    //     expect(response.body[0].name).toBe(basicUser.name);
-    //     expect(response.body[0].email).toBe(basicUser.email);
-    // });
+        // then response should be BAD_REQUEST and error pointing out the wrong id
+        expect(response.status).toBe(NOT_FOUND);
+        expect(response.error.text).toMatch(/error: Cast to ObjectId failed for value (.*) at path "_id" for model "User"/);
+    });
+
+    test('PATCH success', async () => {
+
+        // given user in database
+        const basicUser: IUser = {
+            name: 'Before Change User',
+            email: 'before.change.user@gmail.com',
+        };
+        const createdUser = new User(basicUser);
+        const savedUser = await createdUser.save();
+        const userId = savedUser._id;
+
+        // when PATCH that user
+        const response = await request(app)
+            .patch(`/api/users/${userId}`)
+            .send({
+                name: 'After Change User',
+                email: 'after.change.user@gmail.com',
+            });
+
+        // then response should be OK and data should be updated
+        expect(response.status).toBe(OK);
+        expect(response.body.name).toBe('After Change User');
+        expect(response.body.email).toBe('after.change.user@gmail.com');
+    });
 }

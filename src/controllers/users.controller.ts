@@ -47,4 +47,17 @@ export class UsersController {
             return res.send(`error: ${err.message}`);
         }
     };
+
+    public updateOne = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const { userId } = req.params as ParamsDictionary;
+            const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+            res.status(OK);
+            return res.send(user);
+        } catch (err) {
+            logger.error(err.message, err);
+            res.status(BAD_REQUEST);
+            return res.send(`error: ${err.message}`);
+        }
+    };
 }

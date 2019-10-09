@@ -34,7 +34,6 @@ export const routesForUsersTests = function () {
         await memoryDb.cleanDb();
     });
 
-    // describe('/api/users', () => {
     test('GET success', async () => {
 
         // given user in database
@@ -81,8 +80,9 @@ export const routesForUsersTests = function () {
                 email: 'created.user@gmail.com',
             });
 
-        // then response should be BAD_REQUEST
+        // then response should be BAD_REQUEST and error pointing out the missing 'name'
         expect(response.status).toBe(BAD_REQUEST);
+        expect(response.error.text).toMatch(/error: User validation failed: name: Path `name` is required./);
     });
 
     test('POST missing \'email\'', async () => {
@@ -94,8 +94,8 @@ export const routesForUsersTests = function () {
                 name: 'Created User',
             });
 
-        // then response should be BAD_REQUEST
+        // then response should be BAD_REQUEST and error pointing out the missing 'email'
         expect(response.status).toBe(BAD_REQUEST);
+        expect(response.error.text).toMatch(/error: User validation failed: email: Path `email` is required./);
     });
-    // });
 }

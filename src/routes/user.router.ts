@@ -12,7 +12,8 @@ router.route('/')
     .post(usersController.createUser);
 
 router.route('/:userId')
-    .get(usersController.getOne);
+    .get(usersController.getOne)
+    .patch(usersController.updateOne);
 
 
 /******************************************************************************
