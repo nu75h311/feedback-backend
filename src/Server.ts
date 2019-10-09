@@ -17,13 +17,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', BaseRouter);
 
-/**
- * Point express to the 'views' directory. If you're using a
- * single-page-application framework like react or angular
- * which has its own development server, you might want to
- * configure this to only serve the index file while in
- * production mode.
- */
+// Point express to the 'views' directory.
 const viewsDir = path.join(__dirname, 'views');
 app.set('views', viewsDir);
 const staticDir = path.join(__dirname, 'public');
