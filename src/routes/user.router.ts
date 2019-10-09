@@ -7,45 +7,13 @@ import { ParamsDictionary } from 'express-serve-static-core';
 const router = Router();
 const usersController = new UsersController();
 
-/******************************************************************************
- *                      Get All Users - "GET /api/users/all"
- ******************************************************************************/
+router.route('/')
+    .get(usersController.getAllUsers)
+    .post(usersController.createUser);
 
-router.get('/', usersController.getAllUsers);
-// async (req: Request, res: Response) => {
-//     try {
-//         const users = await usersController.getAllUsers;
-//         return res.status(OK).json({ users });
-//     } catch (err) {
-//         logger.error(err.message, err);
-//         return res.status(BAD_REQUEST).json({
-//             error: err.message,
-//         });
-//     }
-// });
+router.route('/:userId')
+    .get(usersController.getOne);
 
-/******************************************************************************
- *                       Add One - "POST /api/users/add"
- ******************************************************************************/
-
-router.post('/', usersController.createUser);
-// router.post('/add', async (req: Request, res: Response) => {
-//     try {
-//         const { user } = req.body;
-//         if (!user) {
-//             return res.status(BAD_REQUEST).json({
-//                 error: paramMissingError,
-//             });
-//         }
-//         await usersController.add(user);
-//         return res.status(CREATED).end();
-//     } catch (err) {
-//         logger.error(err.message, err);
-//         return res.status(BAD_REQUEST).json({
-//             error: err.message,
-//         });
-//     }
-// });
 
 /******************************************************************************
  *                       Update - "PUT /api/users/update"

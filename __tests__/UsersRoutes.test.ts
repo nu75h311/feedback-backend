@@ -36,7 +36,7 @@ afterEach(async () => {
 describe('/api/users', () => {
     test('GET', async () => {
 
-        // give user in database
+        // given user in database
         const basicUser: IUser = {
             name: 'Basic User',
             email: 'basic.user@gmail.com',
@@ -70,4 +70,48 @@ describe('/api/users', () => {
         expect(response.body.name).toBe('Created User');
         expect(response.body.email).toBe('created.user@gmail.com');
     });
+});
+
+describe('/api/users/:userId', () => {
+    test('GET', async () => {
+
+        // given user in database
+        const basicUser: IUser = {
+            name: 'Basic User',
+            email: 'basic.user@gmail.com',
+        };
+        const createdUser = new User(basicUser);
+        const savedUser = await createdUser.save();
+        const userId = savedUser._id;
+
+        // when GET all users
+        const response = await request(app).get(`/api/users/${userId}`);
+        console.log(response.body._id);
+
+        // then response should be OK and data should be correct
+        expect(response.status).toBe(OK);
+        expect(response.body.name).toBe(basicUser.name);
+        expect(response.body.email).toBe(basicUser.email);
+    });
+
+    // test('PATCH', async () => {
+
+    //     // given user in database
+    //     const basicUser: IUser = {
+    //         name: 'Before Change User',
+    //         email: 'before.change.user@gmail.com',
+    //     };
+    //     const createdUser = new User(basicUser);
+    //     await createdUser.save();
+
+    //     // when PATCH that user
+    //     const response = await request(app)
+    //         .patch('/api/users');
+
+    //     // then response should be OK and data should be correct
+    //     expect(response.status).toBe(OK);
+    //     expect(response.body[0]._id).toBeDefined;
+    //     expect(response.body[0].name).toBe(basicUser.name);
+    //     expect(response.body[0].email).toBe(basicUser.email);
+    // });
 });

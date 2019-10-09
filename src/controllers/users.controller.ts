@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
-import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
+import { BAD_REQUEST, CREATED, NOT_FOUND, OK } from 'http-status-codes';
+import { ParamsDictionary } from 'express-serve-static-core';
+
 import { logger } from '@shared';
 
 import { IUser } from '@interfaces';
@@ -32,4 +34,17 @@ export class UsersController {
             return res.send(`error: ${err.message}`);
         }
     }
+
+    public getOne = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const { userId } = req.params as ParamsDictionary;
+            const user = await User.findById(userId);
+            res.status(OK);
+            return res.send(user);
+        } catch (err) {
+            logger.error(err.message, err);
+            res.status(NOT_FOUND);
+            return res.send(`error: ${err.message}`);
+        }
+    };
 }
