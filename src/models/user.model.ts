@@ -1,7 +1,14 @@
-import * as mongoose from 'mongoose';
-import { IUser } from '@interfaces';
+import mongoose, { Schema, Document } from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+export interface IUser extends Document {
+    name: string;
+    email: string;
+    passportStrategyId: string;
+    photo: string;
+    [key: string]: any;
+}
+
+const userSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -9,6 +16,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
     },
     passportStrategyId: {
         type: String,
@@ -18,4 +26,4 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-export const userModel = mongoose.model<IUser & mongoose.Document>('User', userSchema);
+export const User = mongoose.model<IUser>('User', userSchema);

@@ -3,9 +3,8 @@ import { BAD_REQUEST, CREATED, OK } from 'http-status-codes';
 
 import app from '@server';
 import { logger } from '@shared';
+import { User } from '@models';
 
-import { userModel as User } from '@models';
-import { IUser } from '@interfaces';
 import { MemoryDb } from './support/_setupDb';
 import { Server } from 'http';
 
@@ -30,6 +29,11 @@ export const routesForUsersTests = function () {
         await memoryDb.teardownDb();
     });
 
+    beforeEach(async () => {
+        // mongodb-memory-server requires this to handle unique keys
+        await User.ensureIndexes();
+    });
+
     afterEach(async () => {
         await memoryDb.cleanDb();
     });
@@ -37,7 +41,7 @@ export const routesForUsersTests = function () {
     test('GET success', async () => {
 
         // given user in database
-        const basicUser: IUser = {
+        const basicUser = {
             name: 'Basic User',
             email: 'basic.user@gmail.com',
         };
@@ -97,5 +101,28 @@ export const routesForUsersTests = function () {
         // then response should be BAD_REQUEST and error pointing out the missing 'email'
         expect(response.status).toBe(BAD_REQUEST);
         expect(response.error.text).toMatch(/error: User validation failed: email: Path `email` is required./);
+    });
+
+    test('POST using existing email', async () => {
+
+        // given user in database
+        const basicUser = {
+            name: 'Basic User',
+            email: 'basic.user@gmail.com',
+        };
+        const createdUser = new User(basicUser);
+        await createdUser.save();
+
+        // when POST a user using an existing email
+        const response = await request(app)
+            .post('/api/users')
+            .send({
+                name: 'Another User',
+                email: 'basic.user@gmail.com',
+            });
+
+        // then response should be BAD_REQUEST and error pointing out the existing email
+        expect(response.status).toBe(BAD_REQUEST);
+        expect(response.error.text).toMatch(/error: E11000 duplicate key error dup key: { : "basic.user@gmail.com" }/);
     });
 }

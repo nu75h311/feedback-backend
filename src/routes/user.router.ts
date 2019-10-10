@@ -1,7 +1,6 @@
 
 import { UsersController } from '@controllers';
 import { Router } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
 
 // Init shared
 const router = Router();

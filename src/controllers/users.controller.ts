@@ -3,9 +3,7 @@ import { BAD_REQUEST, CREATED, NOT_FOUND, OK } from 'http-status-codes';
 import { ParamsDictionary } from 'express-serve-static-core';
 
 import { logger } from '@shared';
-
-import { IUser } from '@interfaces';
-import { userModel as User } from '@models';
+import { IUser, User } from '@models';
 
 export class UsersController {
 
@@ -51,7 +49,14 @@ export class UsersController {
     public updateOne = async (req: Request, res: Response): Promise<Response> => {
         try {
             const { userId } = req.params as ParamsDictionary;
-            const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+            const user = await User.findByIdAndUpdate(
+                userId,
+                req.body,
+                {
+                    new: true,
+                    runValidators: true
+                }
+            );
             res.status(OK);
             return res.send(user);
         } catch (err) {
