@@ -22,7 +22,6 @@
   },
   "_moduleAliases": {
     "@controllers": "dist/controllers",
-    "@interfaces": "dist/interfaces",
     "@models": "dist/models",
     "@routes": "dist/routes",
     "@shared": "dist/shared",

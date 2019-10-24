@@ -15,7 +15,6 @@ module.exports = {
 
   moduleNameMapper: {
     '@controllers': '<rootDir>/src/controllers',
-    '@interfaces': '<rootDir>src/interfaces',
     '@models': '<rootDir>src/models',
     '@routes': '<rootDir>src/routes',
     '@shared': '<rootDir>src/shared',
@@ -27,6 +26,7 @@ module.exports = {
     ['./node_modules/jest-html-reporter', {
       'pageTitle': 'feedback app backend test report',
       'theme': 'darkTheme',
+      'includeFailureMsg': true,
     }]
   ]
 };

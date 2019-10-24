@@ -5,7 +5,6 @@ export interface IUser extends Document {
     email: string;
     passportStrategyId: string;
     photo: string;
-    [key: string]: any;
 }
 
 const userSchema = new Schema({

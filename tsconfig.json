@@ -16,9 +16,6 @@
       "@controllers": [
         "src/controllers"
       ],
-      "@interfaces": [
-        "src/interfaces"
-      ],
       "@models": [
         "src/models"
       ],

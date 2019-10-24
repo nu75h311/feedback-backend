@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { BAD_REQUEST, CREATED, NOT_FOUND, OK } from 'http-status-codes';
-import { ParamsDictionary } from 'express-serve-static-core';
 
 import { logger } from '@shared';
 import { IUser, User } from '@models';
@@ -35,33 +34,52 @@ export class UsersController {
 
     public getOne = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const { userId } = req.params as ParamsDictionary;
-            const user = await User.findById(userId);
+            const user = await User.findById(req.params.userId);
+            if (!user) {
+                return res.status(NOT_FOUND).send(`User not found => id:${req.params.userId}`);
+            };
             res.status(OK);
             return res.send(user);
         } catch (err) {
             logger.error(err.message, err);
-            res.status(NOT_FOUND);
+            res.status(BAD_REQUEST);
             return res.send(`error: ${err.message}`);
         }
     };
 
     public updateOne = async (req: Request, res: Response): Promise<Response> => {
         try {
-            const { userId } = req.params as ParamsDictionary;
             const user = await User.findByIdAndUpdate(
-                userId,
+                req.params.userId,
                 req.body,
                 {
                     new: true,
                     runValidators: true
                 }
             );
+            if (!user) {
+                return res.status(NOT_FOUND).send(`User not found => id:${req.params.userId}`);
+            };
             res.status(OK);
             return res.send(user);
         } catch (err) {
             logger.error(err.message, err);
             res.status(BAD_REQUEST);
+            return res.send(`error: ${err.message}`);
+        }
+    };
+
+    public deleteOne = async (req: Request, res: Response): Promise<Response> => {
+        try {
+            const user = await User.findByIdAndDelete(req.params.userId);
+            if (!user) {
+                return res.status(NOT_FOUND).send(`User not found => id:${req.params.userId}`);
+            };
+            res.status(OK);
+            return res.send(user);
+        } catch (err) {
+            logger.error(err.message, err);
+            res.status(NOT_FOUND);
             return res.send(`error: ${err.message}`);
         }
     };
