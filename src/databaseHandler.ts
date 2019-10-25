@@ -3,7 +3,7 @@ import { logger } from '@shared';
 
 const connectDb = () => {
   const { DB_URL } = process.env;
-  mongoose.connect(`mongodb://${DB_URL}`,
+  mongoose.connect(`${DB_URL}`,
     {
       useNewUrlParser: true,
       useFindAndModify: false,
